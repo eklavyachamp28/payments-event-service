@@ -1,0 +1,17 @@
+### Create a payment (idempotent — resend with the same key to see a 200 replay)
+POST http://localhost:8080/api/payments
+Content-Type: application/json
+Idempotency-Key: order-1001
+
+{
+  "merchantId": "merchant-42",
+  "customerId": "customer-7",
+  "amount": 1499.00,
+  "currency": "INR"
+}
+
+### Fetch it (status flips PENDING -> SETTLED once the consumer posts the ledger)
+GET http://localhost:8080/api/payments/{{paymentId}}
+
+### Health
+GET http://localhost:8080/actuator/health
